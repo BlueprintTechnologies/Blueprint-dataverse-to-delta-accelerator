@@ -41,7 +41,7 @@ my_dv_clientId = dbutils.secrets.get(scope="demo-kv-scope",key="eric-demo-datave
 my_dv_secret   = dbutils.secrets.get(scope="demo-kv-scope",key="eric-demo-dataverse-secret") 
 my_ad_tenant   = dbutils.secrets.get(scope="demo-kv-scope",key="bp-tenant-id") 
 
-my_dv_entity   = 'contacts' #Type any endpoint entity name for export. TODO: Make dynamic with Databricks widget
+my_dv_entity   = 'accounts' #Type any endpoint entity name for export. TODO: Make dynamic with Databricks widget
 
 # COMMAND ----------
 
@@ -97,6 +97,8 @@ def call_dataverse_endpoint(endpoint):
 
     # Initial request
     response = requests.get(endpoint, headers=headers)
+    
+    print(print(f''' Fetching from initial url: {endpoint} ''' ))
 
     # Loop through the responses until odata.nextLink is gone.
     while "@odata.nextLink" in response.json():
@@ -105,6 +107,8 @@ def call_dataverse_endpoint(endpoint):
 
         # Request the odata.nextLink URL
         response = requests.get(response.json()["@odata.nextLink"], headers=headers)
+        
+        print(f''' Fetching from successive url: {response.json()["@odata.nextLink"]} ''' )
 
     # Append nextLink response data
     data.extend(response.json()["value"])
@@ -290,5 +294,12 @@ sql('USE CATALOG demos;')
 # Create a Dataverse database/schema
 sql('CREATE DATABASE IF NOT EXISTS Dataverse;')
 
+# Drop the table if it exists (Future: Change to MERGE/APPLY CHANGES)
+sql(f'DROP TABLE IF EXISTS Dataverse.{my_dv_entity}')
+
 # Create our delta table from our dataframe
 df.write.mode('overwrite').format('delta').saveAsTable(f'Dataverse.{my_dv_entity}')
+
+# COMMAND ----------
+
+
