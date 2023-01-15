@@ -299,3 +299,10 @@ sql(f'DROP TABLE IF EXISTS Dataverse.{my_dv_entity}')
 
 # Create our delta table from our dataframe
 df.write.mode('overwrite').format('delta').saveAsTable(f'Dataverse.{my_dv_entity}')
+
+# Show some records
+display(sql(f'select * from Dataverse.{my_dv_entity} limit 10'))
+
+# COMMAND ----------
+
+
