@@ -7,4 +7,4 @@ While there are several integration platforms that perform the task of integrati
 The included notebook is completely dynamic, including the schema inference. It results in a Delta table, ready for analysis.
 
 ## Special Thanks
-This accelerator was built by Eric Vogelpohl. More details about the motivation for this accelerator is available at [this blog post](https://medium.com/@EricVogelpohl/dataverse-meet-databricks-8f500a388699).
+This accelerator was built by Eric Vogelpohl. More details about the motivation for this accelerator are available at [this blog post](https://medium.com/@EricVogelpohl/dataverse-meet-databricks-8f500a388699).
